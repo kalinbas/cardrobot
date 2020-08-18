@@ -118,6 +118,17 @@ export function runSimulationStep(game) {
     }
   }
 
+  // check invalid moves
+  for (let player of game.players) {
+    if (player.targetPosition) {
+      // if crash with wall - loose life
+      if (player.targetPosition.x < 0 || player.targetPosition.x >= game.size || player.targetPosition.y < 0 || player.targetPosition.y >= game.size) {
+        player.lives--
+        delete player.targetPosition
+      }
+    }
+  }
+
   // handle moving collisions
   for (let player of game.players) {
     if (player.targetPosition) {
@@ -125,15 +136,13 @@ export function runSimulationStep(game) {
       // crash with player
       let conflictPlayer = game.players.find(p =>
         p !== player &&
-        (p.targetPosition && p.targetPosition.x === player.targetPosition.x && p.targetPosition.y === player.targetPosition.y ||
-          !p.targetPosition && p.x === player.targetPosition.x && p.y === player.targetPosition.y))
-
-      // if crash with wall - loose life
-      if (player.targetPosition.x < 0 || player.targetPosition.x >= game.size || player.targetPosition.y < 0 || player.targetPosition.y >= game.size) {
-        player.lives--
-      } else if (conflictPlayer) {
+        ((p.targetPosition && p.targetPosition.x === player.targetPosition.x && p.targetPosition.y === player.targetPosition.y) ||
+          (!p.targetPosition && p.x === player.targetPosition.x && p.y === player.targetPosition.y)))
+      
+      if (conflictPlayer) {
         player.lives--
       } else {
+        // move only if no conflict
         player.x = player.targetPosition.x
         player.y = player.targetPosition.y
       }
@@ -158,6 +167,7 @@ export function runSimulationStep(game) {
     if (aliveCount > 0) {
       let winner = game.players.find(p => p.lives > 0)
       winner.isWinner = true
+      game.winner = winner
     }
     game.isFinished = true
   }
@@ -197,22 +207,8 @@ export function runSimulations(nr, trees) {
 
   for (let i = 0; i < nr; i++) {
 
-    // create random game until all different positions
-    let game = null
-    while (game == null || game.players.some(p1 => game.players.some(p2 => p1 != p2 && p1.x === p2.x && p1.y === p2.y))) {
-      game = {
-        turn: 0,
-        size: 5,
-        players: trees.map(t => ({
-          lives: maxLives,
-          code: t,
-          x: Math.floor(Math.random() * boardSize),
-          y: Math.floor(Math.random() * boardSize),
-          d: turnDirectionRight({ x: 0, y: 1 }, Math.floor(Math.random() * 4))
-        }))
-      }
-    }
-
+    let game = createGame(trees)
+   
     let turns = 0
     while (turns < maxTurns && !game.isFinished) {
       runSimulationStep(game)
