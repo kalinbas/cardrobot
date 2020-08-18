@@ -21,8 +21,10 @@ export function createGame(trees) {
 
 export function runSimulationStep(game) {
 
-  //TODO  if all minus one player dead
-  
+  // if game is finished - return
+  if (game.isFinished) {
+    return
+  }
 
   // calculate action
   for (let player of game.players) {
@@ -149,6 +151,17 @@ export function runSimulationStep(game) {
     delete player.targetPosition
     delete player.action
   }
+
+  //if all minus one player dead - set finished
+  let aliveCount = game.players.reduce((n, x) => n + (x.lives > 0), 0);
+  if (aliveCount < 2) {
+    if (aliveCount > 0) {
+      let winner = game.players.find(p => p.lives > 0)
+      winner.isWinner = true
+    }
+    game.isFinished = true
+  }
+
   game.turn++
 }
 
@@ -170,6 +183,59 @@ function checkPlayerTarget(game, player) {
     }
   }
   return null
+}
+
+export function runSimulations(nr, trees) {
+
+  let maxTurns = 50
+
+  let statistics = {
+    playerWins: trees.map(t => 0),
+    draws: 0,
+    averageTurns: 0
+  }
+
+  for (let i = 0; i < nr; i++) {
+
+    // create random game until all different positions
+    let game = null
+    while (game == null || game.players.some(p1 => game.players.some(p2 => p1 != p2 && p1.x === p2.x && p1.y === p2.y))) {
+      game = {
+        turn: 0,
+        size: 5,
+        players: trees.map(t => ({
+          lives: maxLives,
+          code: t,
+          x: Math.floor(Math.random() * boardSize),
+          y: Math.floor(Math.random() * boardSize),
+          d: turnDirectionRight({ x: 0, y: 1 }, Math.floor(Math.random() * 4))
+        }))
+      }
+    }
+
+    let turns = 0
+    while (turns < maxTurns && !game.isFinished) {
+      runSimulationStep(game)
+      turns++
+    }
+    
+    // is a draw when not finished or when none wins
+    if (turns == maxTurns) {
+      statistics.draws++
+    } else {
+      for (let pi = 0; pi < game.players.length; pi++) {
+        statistics.playerWins[pi] += game.players[pi].isWinner ? 1 : 0
+      }
+      if (!game.players.some(p => p.isWinner)) {
+        statistics.draws++
+      }
+      statistics.averageTurns += turns
+    }
+  }
+
+  statistics.averageTurns /= nr - statistics.draws
+
+  return statistics
 }
 
 function debugPrintBoard(game) {

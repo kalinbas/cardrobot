@@ -6,16 +6,31 @@
   <script src="index.js" type="module"></script>
   <style>
     #simulation {
-      height: 400px;
-      width: 300px;
+      height: 500px;
+      width: 500px;
     }
 
     #simulation>div {
-      width: 56px;
-      height: 56px;
+      width: 96px;
+      height: 96px;
       float: left;
       border: 1px solid;
       margin: 1px;
+    }
+
+    label {
+      cursor: pointer;
+      font-size: 1.25em;
+      font-weight: 700;
+      color: white;
+      background-color: black;
+      display: inline-block;
+      padding: 10px;
+    }
+
+
+    label:hover {
+      background-color: red;
     }
   </style>
 </head>
@@ -84,22 +99,45 @@
     das Foto nicht gelesen werden kann, versucht es erneut mit einem besseren Foto.</p>
   <div>
     <h3>Spieler 1</h3>
-    <input id="tree1" type="file" accept="image/*" capture="camera" onchange="loadFile(event)">
+    <select class="tree1" onchange="loadFile(event)">
+      <option value="">Wähle vorgefertigen Bot</option>
+      <option value="bots/simple.jpg">Beispiel 1</option>
+      <option value="bots/basic.jpg">Beispiel 2</option>
+      <option value="bots/advanced.jpg">Beispiel 3</option>
+      <option value="bots/complete.jpg">Beispiel 4</option>
+    </select>
+    <span> oder </span>
+    <label for="tree1">Foto machen</label>
+    <input id="tree1" style="display: none;" class="tree1" type="file" accept="image/*" capture="camera"
+      onchange="loadFile(event)">
     <div id="errortree1"></div>
   </div>
   <div>
     <h3>Spieler 2</h3>
-    <input id="tree2" type="file" accept="image/*" capture="camera" onchange="loadFile(event)">
+    <select class="tree2" onchange="loadFile(event)">
+      <option value="">Wähle vorgefertigen Bot</option>
+      <option value="bots/simple.jpg">Beispiel 1</option>
+      <option value="bots/basic.jpg">Beispiel 2</option>
+      <option value="bots/advanced.jpg">Beispiel 3</option>
+      <option value="bots/complete.jpg">Beispiel 4</option>
+    </select>
+    <span> oder </span>
+    <label for="tree2">Foto machen</label>
+    <input id="tree2" style="display: none;" class="tree2" type="file" accept="image/*" capture="camera"
+      onchange="loadFile(event)">
     <div id="errortree2"></div>
   </div>
 
-  <div>
+  <div id="simulation-container" style="display: none;">
     <h2>Simulation</h2>
+    <p id="statistics"></p>
     <button onclick="startSimulation()">Neues Spiel</button>
+    <button onclick="nextTurn()">Naechster Zug</button>
+
     <div id="simulation">
 
     </div>
-    <button onclick="nextTurn()">vorwärts</button>
+
   </div>
 </body>
 

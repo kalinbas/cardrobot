@@ -1,13 +1,18 @@
 import getCodes from './logic/getCodes.js';
 import getTree from './logic/getTree.js';
-import { createGame, runSimulationStep } from './logic/simulation.js';
+import { createGame, runSimulationStep, runSimulations } from './logic/simulation.js';
 import { boardSize } from './logic/constants.js';
 
 let data = {}
 
 function loadFile(event) {
   var image = new Image();
-  image.src = URL.createObjectURL(event.target.files[0]);
+  if (event.target.selectedIndex > 0) {
+    image.src = event.target.options[event.target.selectedIndex].value
+  } else if (event.target.files) {
+    image.src = URL.createObjectURL(event.target.files[0])
+  }
+  
   image.onload = function () {
     var canvas = document.createElement('canvas');
     canvas.width = this.width;
@@ -19,35 +24,56 @@ function loadFile(event) {
 
     try {
       let tree = getTree(codes)
-      data[event.target.id] = tree
-      document.getElementById("error" + event.target.id).textContent = codes.length + " Karten geladen";
+      data[event.target.className] = tree
+      document.getElementById("error" + event.target.className).textContent = codes.length + " Karten geladen";
     } catch (err) {
-      document.getElementById("error" + event.target.id).textContent = "Fehler:" + err.message;
+      data[event.target.className] = null
+      document.getElementById("error" + event.target.className).textContent = "Fehler:" + err.message;
     }
 
-    document.getElementById("simulation").innerHTML = "";
-
     if (data.tree1 && data.tree2) {
+      calculateStatistics()
       startSimulation()
-    } 
+      document.getElementById("simulation-container").style.display = "block";
+      window.scrollTo(0,document.body.scrollHeight);
+    } else {
+      document.getElementById("simulation-container").style.display = "none";
+    }
 
     URL.revokeObjectURL(image.src) // free memory
   }
 }
 
+function calculateStatistics() {
+  let trees = [data.tree1, data.tree2]
+  
+  let nr = 1000
+  data.statistics = runSimulations(nr, trees)
+
+  document.getElementById("statistics").innerText = 
+  `${nr} Spiele, Siege Spieler 1: ${data.statistics.playerWins[0]}, Siege Spieler 2: ${data.statistics.playerWins[1]}, Unentschieden: ${data.statistics.draws}`
+
+}
+
 function startSimulation() {
   if (data.tree1 && data.tree2) {
-    data.game = createGame([data.tree1, data.tree2])
+    let trees = [data.tree1, data.tree2]
+    data.game = createGame(trees)
+    clearBoard() 
     drawBoard()
   }
 }
 
-function drawBoard() {  
+function clearBoard() {
   var board = document.getElementById("simulation")
   board.innerHTML = "";
+}
+
+function drawBoard() {  
+  var board = document.getElementById("simulation")
 
   let h3 = document.createElement("h3")
-  h3.innerText = "Zug " + (data.game.turn + 1)
+  h3.innerText = "Zug " + (data.game.turn + 1) + (data.game.isFinished ? " - Spiel fertig" : "")
   board.appendChild(h3)
 
   for (let y = 0; y < boardSize; y++) {
@@ -63,8 +89,11 @@ function drawBoard() {
 }
 
 function nextTurn() {
-  runSimulationStep(data.game)
-  drawBoard()
+  if (data.game) {
+    runSimulationStep(data.game)
+    clearBoard() 
+    drawBoard()
+  }
 }
 
 window.loadFile = loadFile
