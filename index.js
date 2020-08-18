@@ -28,16 +28,16 @@ function loadFile(event) {
       document.getElementById("error" + event.target.className).textContent = codes.length + " Karten geladen";
     } catch (err) {
       data[event.target.className] = null
-      document.getElementById("error" + event.target.className).textContent = "Fehler:" + err.message;
+      document.getElementById("error" + event.target.className).textContent = "Fehler: " + err.message;
     }
 
     if (data.tree1 && data.tree2) {
       calculateStatistics()
       startSimulation()
-      document.getElementById("simulation-container").style.display = "block";
-      window.scrollTo(0,document.body.scrollHeight);
+      document.getElementById("simulation-container").style.visibility = "visible";
+      //window.scrollTo(0,document.body.scrollHeight);
     } else {
-      document.getElementById("simulation-container").style.display = "none";
+      document.getElementById("simulation-container").style.visibility = "hidden";
     }
 
     URL.revokeObjectURL(image.src) // free memory
