@@ -3,7 +3,21 @@
 
 <head>
   <title>CardRobot</title>
-  <script src="index.js" type="text/javascript"></script>
+  <script src="index.js" type="module"></script>
+  <style>
+    #simulation {
+      height: 400px;
+      width: 300px;
+    }
+
+    #simulation>div {
+      width: 56px;
+      height: 56px;
+      float: left;
+      border: 1px solid;
+      margin: 1px;
+    }
+  </style>
 </head>
 
 <body>
@@ -11,7 +25,8 @@
   <p>Das Ziel des Spiels ist es mithilfe von Karten einen Roboter zu programmieren und ihn gegen einen anderen Roboter
     in der Arena antreten zu lassen.</p>
   <p>Der Roboter hat verschiedene Sensoren und muss sich entscheiden welche Aktion er in jeder Runde ausführen will.</p>
-  <p>Jede Karte symbolisiert eine Bedingung mit zwei Möglichkeiten (trifft zu oder trifft nicht zu) oder eine Aktion. Die Bedingungen können in einer Baumstruktur beliebig verknüpft werden, am Schluss
+  <p>Jede Karte symbolisiert eine Bedingung mit zwei Möglichkeiten (trifft zu oder trifft nicht zu) oder eine Aktion.
+    Die Bedingungen können in einer Baumstruktur beliebig verknüpft werden, am Schluss
     muss aber immer eine Aktion definiert sein. (z.B. Wenn meine Distanz bis zur Wand 1 oder 2 ist,
     dann drehe rechts sonst gehe geradeaus).</p>
   <h2>Verfügbare Sensoren</h2>
@@ -48,9 +63,10 @@
       <img src="bots/tb_simple.jpg" width="100%" />
       <p>Wenn die Distanz zur Wand 1 beträgt, drehe rechts sonst gehe gerade aus.</p>
     </div>
-    <div style="width: 25%;float: left;text-align: center;"> 
+    <div style="width: 25%;float: left;text-align: center;">
       <img src="bots/tb_basic.jpg" width="100%" />
-      <p>Wenn die Distanz zum Gegner 1,2,3 beträgt greife an sonst wenn in Schussweite gehe zufällig rechts oder links, sonst wenn 1 vor der Wand drehe sonst gehe gerade aus.</p>
+      <p>Wenn die Distanz zum Gegner 1,2,3 beträgt greife an sonst wenn in Schussweite gehe zufällig rechts oder links,
+        sonst wenn 1 vor der Wand drehe sonst gehe gerade aus.</p>
     </div>
     <div style="width: 25%;float: left;text-align: center;">
       <img src="bots/tb_advanced.jpg" width="100%" />
@@ -64,14 +80,27 @@
   </div>
 
   <h2>Roboter hochladen</h2>
-  <p>Um die Simulation zu starten müsst ihr je ein Foto von den Karten hochladen und SIMULATION STARTEN drücken. Falls das Foto nicht gelesen werden kann, versucht es erneut mit einem besseren Foto.</p>
+  <p>Um die Simulation zu starten müsst ihr je ein Foto von den Karten hochladen und SIMULATION STARTEN drücken. Falls
+    das Foto nicht gelesen werden kann, versucht es erneut mit einem besseren Foto.</p>
   <div>
-    <input type="file" accept="image/*" capture="camera" onchange="loadFile(event)">
+    <h3>Spieler 1</h3>
+    <input id="tree1" type="file" accept="image/*" capture="camera" onchange="loadFile(event)">
+    <div id="errortree1"></div>
   </div>
   <div>
-    <input type="file" accept="image/*" capture="camera" onchange="loadFile(event)">
+    <h3>Spieler 2</h3>
+    <input id="tree2" type="file" accept="image/*" capture="camera" onchange="loadFile(event)">
+    <div id="errortree2"></div>
   </div>
-  <button>SIMULATION STARTEN</button>
+
+  <div>
+    <h2>Simulation</h2>
+    <button onclick="startSimulation()">Neues Spiel</button>
+    <div id="simulation">
+
+    </div>
+    <button onclick="nextTurn()">vorwärts</button>
+  </div>
 </body>
 
 </html>
