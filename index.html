@@ -11,16 +11,16 @@
   <p>Das Ziel des Spiels ist es mithilfe von Karten einen Roboter zu programmieren und ihn gegen einen anderen Roboter
     in der Arena antreten zu lassen.</p>
   <p>Der Roboter hat verschiedene Sensoren und muss sich entscheiden welche Aktion er in jeder Runde ausführen will.</p>
-  <p>Jede Karte symbolisiert eine Bedingung mit zwei Möglichkeiten (tritt ein oder tritt nicht ein) oder eine Aktion. Die Bedingungen können in einer Baumstruktur beliebig verknüpft werden, am Schluss
+  <p>Jede Karte symbolisiert eine Bedingung mit zwei Möglichkeiten (trifft zu oder trifft nicht zu) oder eine Aktion. Die Bedingungen können in einer Baumstruktur beliebig verknüpft werden, am Schluss
     muss aber immer eine Aktion definiert sein. (z.B. Wenn meine Distanz bis zur Wand 1 oder 2 ist,
-    dann drehe links sonst gehe geradeaus).</p>
-  <h2>Sensoren</h2>
+    dann drehe rechts sonst gehe geradeaus).</p>
+  <h2>Verfügbare Sensoren</h2>
   <ul>
     <li>Was ist meine Distanz bis zur Wand?</li>
     <li>Was ist meine Distanz zum nächsten sichtbaren Gegner?</li>
-    <li>Bin ich für den sichtbare Gegner auch sichtbar</li>
+    <li>Bin ich für den sichtbaren Gegner auch sichtbar</li>
     <li>Wie viele Lebenspunkt habe ich (jeder Roboter beginnt mit 5)</li>
-    <li>Bin ich in Schussweite eines feindlichen Roboters</li>
+    <li>Bin ich in Schussweite eines feindlichen Roboters (sichtbar oder nicht sichtbar)</li>
     <li>Wirf eine Münze</li>
   </ul>
   <h2>Aktionen</h2>
@@ -64,7 +64,7 @@
   </div>
 
   <h2>Roboter hochladen</h2>
-  <p>Um die Simulation zu starten müsst Ihr je ein Foto von den Karten hochladen und START drücken. Falls die Foto nicht gelesen werden kann, versucht es erneut mit einer besseren Foto.</p>
+  <p>Um die Simulation zu starten müsst ihr je ein Foto von den Karten hochladen und SIMULATION STARTEN drücken. Falls das Foto nicht gelesen werden kann, versucht es erneut mit einem besseren Foto.</p>
   <div>
     <input type="file" accept="image/*" capture="camera" onchange="loadFile(event)">
   </div>
