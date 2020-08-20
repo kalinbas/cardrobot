@@ -77,7 +77,7 @@ export function runSimulationStep(game) {
             }
             break;
           case 'setflags':
-            newFlags.push(node.paramCard.values)
+            newFlags.push(...node.paramCard.values)
             first = true // always use first output
             break;
           case 'flagscheck':
