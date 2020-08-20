@@ -9,6 +9,9 @@ export default function getTree(codes) {
     throw new Error("Keine Karten gefunden. Versuche es erneut.")
   }
 
+  // sort by y
+  codes.sort((a, b) => a.startY - b.startY)
+
   while (codes.length > 0) {
 
     // get from same level
@@ -21,8 +24,10 @@ export default function getTree(codes) {
 
       let parentIndex = Math.floor((index - 1) / 2)
 
-      // fill it if root or parent condition not an action
-      if (level === 0 || (tree[parentIndex] && !tree[parentIndex].card.isAction)) {
+       // fill it if root or parent condition not an action or first if only one output action
+      const doProcessIndex = level === 0 || (tree[parentIndex] && !tree[parentIndex].card.isAction) && !(tree[parentIndex].card.hasOneOutput && (index % 2 === 0))
+
+      if (doProcessIndex) {
 
         if (sameLevelIndex === sameLevelCodes.length) {
           throw new Error("Fehlende Karten in der Reihe " + level)

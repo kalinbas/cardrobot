@@ -1,4 +1,4 @@
-import getCodes from './logic/getCodes.js';
+import getCodes from './logic/getCodes2.js';
 import getTree from './logic/getTree.js';
 import { createGame, runSimulationStep, runSimulations } from './logic/simulation.js';
 import { boardSize } from './logic/constants.js';

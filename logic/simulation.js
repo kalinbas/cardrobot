@@ -10,6 +10,7 @@ export function createGame(trees) {
         name: `Spieler ${i + 1}`,
         lives: maxLives,
         code: t,
+        flags: [], // set flags from last turn
         x: Math.floor(Math.random() * boardSize),
         y: Math.floor(Math.random() * boardSize),
         d: turnDirectionRight({ x: 0, y: 1 }, Math.floor(Math.random() * 4))
@@ -30,6 +31,7 @@ export function runSimulationStep(game) {
   for (let player of game.players) {
     let action = null
     let index = 0
+    let newFlags = []
     while (action === null) {
       let node = player.code[index]
       if (node.card.isAction) {
@@ -74,6 +76,15 @@ export function runSimulationStep(game) {
               first = target.player.d.x === 0 && player.d.x === 0 && target.player.d.y !== player.d.y || target.player.d.y === 0 && player.d.y === 0 && target.player.d.x !== player.d.x
             }
             break;
+          case 'setflags':
+            newFlags.push(node.paramCard.values)
+            first = true // always use first output
+            break;
+          case 'flagscheck':
+            if (node.paramCard.values.some(v => player.flags.includes(v))) {
+              first = true
+            }
+            break;
         }
 
         if (first) {
@@ -83,6 +94,7 @@ export function runSimulationStep(game) {
         }
       }
     }
+    player.flags = newFlags
     player.action = action
   }
 
@@ -138,7 +150,7 @@ export function runSimulationStep(game) {
         p !== player &&
         ((p.targetPosition && p.targetPosition.x === player.targetPosition.x && p.targetPosition.y === player.targetPosition.y) ||
           (!p.targetPosition && p.x === player.targetPosition.x && p.y === player.targetPosition.y)))
-      
+
       if (conflictPlayer) {
         player.lives--
       } else {
@@ -208,13 +220,13 @@ export function runSimulations(nr, trees) {
   for (let i = 0; i < nr; i++) {
 
     let game = createGame(trees)
-   
+
     let turns = 0
     while (turns < maxTurns && !game.isFinished) {
       runSimulationStep(game)
       turns++
     }
-    
+
     // is a draw when not finished or when none wins
     if (turns == maxTurns) {
       statistics.draws++

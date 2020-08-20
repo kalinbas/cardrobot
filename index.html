@@ -39,6 +39,7 @@
   <h1>CardRobot</h1>
   <p>Das Ziel des Spiels ist es mithilfe von Karten einen Roboter zu programmieren und ihn gegen einen anderen Roboter
     in der Arena antreten zu lassen.</p>
+  <p><a href="assets/cards1.pdf" target="_blank">Kartensatz 1 ausdrucken</a> <a href="assets/cards2.pdf" target="_blank">Kartensatz 2 ausdrucken</a></p>
   <p>Der Roboter hat verschiedene Sensoren und muss sich entscheiden welche Aktion er in jeder Runde ausführen will.</p>
   <p>Jede Karte symbolisiert eine Bedingung mit zwei Möglichkeiten (trifft zu oder trifft nicht zu) oder eine Aktion.
     Die Bedingungen können in einer Baumstruktur beliebig verknüpft werden, am Schluss
@@ -64,8 +65,7 @@
   <ul>
     <li>Das Spielfeld besteht aus 5x5 Feldern. Zu Beginn jedes Spiels werden die Roboter zufällig platziert und
       ausgerichtet.</li>
-    <li>Jeder Roboter berechnet jede Runde die Aktion er durchführen will und diese werden gleichzeitig durchgeführt.
-      Alle Sensorwerte werden ausgewertet bevor eine Aktion durchgeführt wurde. Die Aktion "Angriff" wird zuletzt
+    <li>Jeder Roboter berechnet die Aktion er durchführen will und diese werden gleichzeitig durchgeführt (ausser Angriff). Die Aktion "Angriff" wird zuletzt
       ausgeführt, es ist also möglich mit einer geschickten Bewegung einem Angriff auszuweichen.</li>
     <li>Wenn ein Roboter 0 Lebenspunkte erreicht verliert er das Spiel.</li>
     <li>Wenn sich ein Roboter auf das Spielfeld eines anderen Roboters bewegt verliert er 1 Lebenspunkt</li>
@@ -75,20 +75,24 @@
   <h2>Beispiele</h2>
   <div>
     <div style="width: 25%;float: left;text-align: center;">
-      <img src="bots/tb_simple.jpg" width="100%" />
+      <img src="bots/simple.jpg" width="100%" />
+      <h4>Beispiel 1</h4>
       <p>Wenn die Distanz zur Wand 1 beträgt, drehe rechts sonst gehe gerade aus.</p>
     </div>
     <div style="width: 25%;float: left;text-align: center;">
-      <img src="bots/tb_basic.jpg" width="100%" />
+      <img src="bots/basic.jpg" width="100%" />
+      <h4>Beispiel 2</h4>
       <p>Wenn die Distanz zum Gegner 1,2,3 beträgt greife an sonst wenn in Schussweite gehe zufällig rechts oder links,
         sonst wenn 1 vor der Wand drehe sonst gehe gerade aus.</p>
     </div>
     <div style="width: 25%;float: left;text-align: center;">
-      <img src="bots/tb_advanced.jpg" width="100%" />
+      <img src="bots/advanced.jpg" width="100%" />
+      <h4>Beispiel 3</h4>
       <p>Fortgeschrittenes Beispiel</p>
     </div>
     <div style="width: 25%;float: left;text-align: center;">
-      <img src="bots/tb_complete.jpg" width="100%" />
+      <img src="bots/complete.jpg" width="100%" />
+      <h4>Beispiel 4</h4>
       <p>Beispiel das alle verschiedenen Karten verwendet</p>
     </div>
     <div style="clear: both;"></div>
@@ -96,7 +100,7 @@
 
   <h2>Roboter hochladen</h2>
   <p>Um die Simulation zu starten müsst ihr je ein Foto von den Karten hochladen und SIMULATION STARTEN drücken. Falls
-    das Foto nicht gelesen werden kann, versucht es erneut mit einem besseren Foto.</p>
+    das Foto nicht gelesen werden kann, versucht es erneut mit einem besseren Foto und richtet die Karten wie in den Beispielen möglichst gerade aus.</p>
   <div>
     <h3>Spieler 1</h3>
     <select class="tree1" onchange="loadFile(event)">
