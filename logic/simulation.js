@@ -77,7 +77,9 @@ export function runSimulationStep(game) {
             }
             break;
           case 'setflags':
+            // set flags on player immediately for this turn and next turn (if not set again will disappear)
             newFlags.push(...node.paramCard.values)
+            player.flags.push(...node.paramCard.values)
             first = true // always use first output
             break;
           case 'flagscheck':
