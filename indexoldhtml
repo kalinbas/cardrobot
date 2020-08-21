@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>CardRobot</title>
+  <script src="index.js" type="module"></script>
+  <style>
+    #simulation {
+      height: 500px;
+      width: 500px;
+    }
+
+    #simulation>div {
+      width: 96px;
+      height: 96px;
+      float: left;
+      border: 1px solid;
+      margin: 1px;
+    }
+
+    label {
+      cursor: pointer;
+      font-size: 1.25em;
+      font-weight: 700;
+      color: white;
+      background-color: black;
+      display: inline-block;
+      padding: 10px;
+    }
+
+
+    label:hover {
+      background-color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>CardRobot</h1>
+  <p>The goal of the game is to program a robot by using the available coding card and let it challenge another robot in battle.</p>
+  <p><a href="assets/cards1.pdf" target="_blank">Kartensatz 1 ausdrucken</a> <a href="assets/cards2.pdf" target="_blank">Kartensatz 2 ausdrucken</a></p>
+  <p>Der Roboter hat verschiedene Sensoren und muss sich entscheiden welche Aktion er in jeder Runde ausführen will.</p>
+  <p>Jede Karte symbolisiert eine Bedingung mit zwei Möglichkeiten (trifft zu oder trifft nicht zu) oder eine Aktion.
+    Die Bedingungen können in einer Baumstruktur beliebig verknüpft werden, am Schluss
+    muss aber immer eine Aktion definiert sein. (z.B. Wenn meine Distanz bis zur Wand 1 oder 2 ist,
+    dann drehe rechts sonst gehe geradeaus).</p>
+  <h2>Verfügbare Sensoren</h2>
+  <ul>
+    <li>Was ist meine Distanz bis zur Wand?</li>
+    <li>Was ist meine Distanz zum nächsten sichtbaren Gegner?</li>
+    <li>Bin ich für den sichtbaren Gegner auch sichtbar</li>
+    <li>Wie viele Lebenspunkt habe ich (jeder Roboter beginnt mit 5)</li>
+    <li>Bin ich in Schussweite eines feindlichen Roboters (sichtbar oder nicht sichtbar)</li>
+    <li>Wirf eine Münze</li>
+  </ul>
+  <h2>Aktionen</h2>
+  <ul>
+    <li>Bewegen (vorwärts, seitwärts, rückwärts)</li>
+    <li>Drehen (nach links oder rechts)</li>
+    <li>Angreifen (wenn Gegner sichtbar Distanz 1 - 3 Schaden, 2 - 2 Schaden, 3 - 1 Schaden)</li>
+    <li>Keine Aktion (heilt 1 Lebenspunkt bis maximal 5)</li>
+  </ul>
+  <h2>Regeln</h2>
+  <ul>
+    <li>Das Spielfeld besteht aus 5x5 Feldern. Zu Beginn jedes Spiels werden die Roboter zufällig platziert und
+      ausgerichtet.</li>
+    <li>Jeder Roboter berechnet die Aktion er durchführen will und diese werden gleichzeitig durchgeführt (ausser Angriff). Die Aktion "Angriff" wird zuletzt
+      ausgeführt, es ist also möglich mit einer geschickten Bewegung einem Angriff auszuweichen.</li>
+    <li>Wenn ein Roboter 0 Lebenspunkte erreicht verliert er das Spiel.</li>
+    <li>Wenn sich ein Roboter auf das Spielfeld eines anderen Roboters bewegt verliert er 1 Lebenspunkt</li>
+    <li>Wenn ein Roboter sich über den Rand des Spielfelds bewegt verliert er 1 Lebenspunkt</li>
+  </ul>
+
+  <h2>Beispiele</h2>
+  <div>
+    <div style="width: 25%;float: left;text-align: center;">
+      <img src="bots/simple.jpg" width="100%" />
+      <h4>Beispiel 1</h4>
+      <p>Wenn die Distanz zur Wand 1 beträgt, drehe rechts sonst gehe gerade aus.</p>
+    </div>
+    <div style="width: 25%;float: left;text-align: center;">
+      <img src="bots/basic.jpg" width="100%" />
+      <h4>Beispiel 2</h4>
+      <p>Wenn die Distanz zum Gegner 1,2,3 beträgt greife an sonst wenn in Schussweite gehe zufällig rechts oder links,
+        sonst wenn 1 vor der Wand drehe sonst gehe gerade aus.</p>
+    </div>
+    <div style="width: 25%;float: left;text-align: center;">
+      <img src="bots/advanced.jpg" width="100%" />
+      <h4>Beispiel 3</h4>
+      <p>Fortgeschrittenes Beispiel</p>
+    </div>
+    <div style="width: 25%;float: left;text-align: center;">
+      <img src="bots/complete.jpg" width="100%" />
+      <h4>Beispiel 4</h4>
+      <p>Beispiel das alle verschiedenen Karten verwendet</p>
+    </div>
+    <div style="clear: both;"></div>
+  </div>
+
+  <h2>Roboter hochladen</h2>
+  <p>Um die Simulation zu starten müsst ihr je ein Foto von den Karten hochladen und SIMULATION STARTEN drücken. Falls
+    das Foto nicht gelesen werden kann, versucht es erneut mit einem besseren Foto und richtet die Karten wie in den Beispielen möglichst gerade aus.</p>
+  <div>
+    <h3>Spieler 1</h3>
+    <select class="tree1" onchange="loadFile(event)">
+      <option value="">Wähle vorgefertigen Bot</option>
+      <option value="bots/simple.jpg">Beispiel 1</option>
+      <option value="bots/basic.jpg">Beispiel 2</option>
+      <option value="bots/advanced.jpg">Beispiel 3</option>
+      <option value="bots/complete.jpg">Beispiel 4</option>
+    </select>
+    <span> oder </span>
+    <label for="tree1">Foto machen</label>
+    <input id="tree1" style="display: none;" class="tree1" type="file" accept="image/*" capture="camera"
+      onchange="loadFile(event)">
+    <div id="errortree1"></div>
+  </div>
+  <div>
+    <h3>Spieler 2</h3>
+    <select class="tree2" onchange="loadFile(event)">
+      <option value="">Wähle vorgefertigen Bot</option>
+      <option value="bots/simple.jpg">Beispiel 1</option>
+      <option value="bots/basic.jpg">Beispiel 2</option>
+      <option value="bots/advanced.jpg">Beispiel 3</option>
+      <option value="bots/complete.jpg">Beispiel 4</option>
+    </select>
+    <span> oder </span>
+    <label for="tree2">Foto machen</label>
+    <input id="tree2" style="display: none;" class="tree2" type="file" accept="image/*" capture="camera"
+      onchange="loadFile(event)">
+    <div id="errortree2"></div>
+  </div>
+
+  <div id="simulation-container" style="visibility: hidden;">
+    <h2>Simulation</h2>
+    <button onclick="startSimulation()">Neues Spiel</button>
+    <button onclick="nextTurn()">Naechster Zug</button>
+
+    <div id="simulation">
+
+    </div>
+
+    <h2 style="clear: both;">
+      Statistik
+    </h2>
+    <p id="statistics"></p>
+
+  </div>
+</body>
+
+</html>
