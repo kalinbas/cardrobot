@@ -135,16 +135,15 @@ select {
 * This is the blue top section that appears on the page.
 */
 
+html, body, .splash-container {
+  width:100%;
+  height:100%;
+  margin:0;
+  padding:0;
+}
+
 .splash-container {
   background: #1f8dd6;
-  z-index: 1;
-  overflow: hidden;
-  /* The following styles are required for the "scroll-over" effect */
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  position: fixed !important;
 }
 
 .splash {
