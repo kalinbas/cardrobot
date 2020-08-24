@@ -51,12 +51,6 @@ export function setupGame(game) {
     players = game.players.map((p, i) => createPlayer(i, p.x, p.y, p.d.x, p.d.y, imageObj))
     players.forEach(p => playerLayer.add(p.playerGroup))
     stage.add(playerLayer);
-
-
-    //moveToCoordsAnimated(350, 150, player2)
-    //rotateAnimated(true, player1)
-    //shotAnimated(350, 50, player1, playerLayer)
-    //changeHeartsAnimated(player1.hearts, 6)
   }
 }
 

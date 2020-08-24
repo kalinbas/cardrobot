@@ -61,6 +61,7 @@ function initSimulation() {
     let trees = [data.tree1, data.tree2]
     data.game = createGame(trees)
     setupGame(data.game)
+    startSimulation()
   }
 }
 
