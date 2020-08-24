@@ -141,11 +141,13 @@ export function runSimulationStep(game) {
   }
 
   // check invalid moves
-  for (let player of game.players) {
+  for (let [i, player] of game.players.entries()) {
     if (player.targetPosition) {
       // if crash with wall - loose life
       if (player.targetPosition.x < 0 || player.targetPosition.x >= game.size || player.targetPosition.y < 0 || player.targetPosition.y >= game.size) {
         player.lives--
+        result[i].deltaLives--
+        result[i].isCrash = true
         delete player.targetPosition
       }
     }
