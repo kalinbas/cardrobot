@@ -14,19 +14,18 @@
   <link rel="stylesheet" href="css/styles.css">
 
   <script src="https://unpkg.com/konva@7.0.6/konva.min.js"></script>
+  <script src="index.js" type="module"></script>
 </head>
 
-<body>
-
-
+<body onload="initStage()">
   <div class="splash-container">
     <div class="splash">
       <h1 class="splash-head">
         CardRobots
       </h1>
       <p class="splash-subhead">
-        CardRobots is a board game which allows you to program a robot using simple cards and then fight real battles
-        against other players (using a smartphone).
+        CardRobots is a board game which allows you to program a robot using simple cards and then fight battles
+        against other robots (using a smartphone).
       </p>
       <div class="video">
         <iframe
@@ -46,13 +45,15 @@
 
     <div class="content">
       <h2 id="start" class="content-head is-center">Start playing</h2>
-      <p>To start playing <strong>CardRobots</strong> you need to print out and cut the playing cards which you can
-        download here.</p>
+      <p>To start playing <strong>CardRobots</strong> you need to print and cut the playing cards which you can
+        download here. The playing board (optional) can be used to test the robots movements on your table before uploading it to the simulator.</p>
       <p class="is-center">
         <a class="pure-button pure-button-primary" href="assets/cards1.pdf" target="_blank"><i
             class="fa fa-download"></i> Cards 1 (.pdf)</a>
         <a class="pure-button pure-button-primary" href="assets/cards2.pdf" target="_blank"><i
             class="fa fa-download"></i> Cards 2 (.pdf)</a>
+        <a class="pure-button pure-button-primary" href="assets/board.pdf" target="_blank"><i
+            class="fa fa-download"></i> Playing board and robot tokens (.pdf)</a>
       </p>
       <p>
         As soon as you have your own playing cards try to program a simple bot (following the <a
@@ -61,7 +62,7 @@
     </div>
     <div class="content">
       <h2 id="rules" class="content-head is-center">Rules</h2>
-      <p>The goal of the game is to program a smart robot which is able to survive in a simulated arena. The robot has
+      <p>The goal of the game is to program a robot which is able to survive in a simulated arena. The robot has
         certain sensors which he uses to decide what action to perform each turn. </p>
 
       <h3>Basic rules</h3>
@@ -72,90 +73,108 @@
           game.</li>
         <li>Using his programmed logic each turn the robot decides what action he wants to perform.</li>
       </ul>
-      <h3>How the robots decide what actions to do</h3>
+      <h3>How the robots decide what action to perform</h3>
       <ul>
         <li>
-          Each robot uses his topmost card and checks the <b>conditon card</b>. Depending on the outcome it will
+          Each robot starts with his topmost card and checks the condition on the card. Depending on the outcome it will
           continue with the card below on left or right.
-          It does so repeatedly until it reaches an <b>action card</b> it stops and decides to use this action.
+          It does so repeatedly until it reaches an <b>action card</b> which determines which action to take.
+          Depending where the robots are standing on the board each turn different decisions are taken.
         </li>
       </ul>
+      <h4>Example</h4>
+      <p>Lets assume the blue robot has the programmed logic on the right. It first checks if it can directly see
+        another robot in front of him. The answer is NO, so it continues to the next card on the right. This card checks
+        if it is at distance 1 of the edge of the board and here the answer is YES. So it continues with the next card
+        on the left which is an action card TURN LEFT and thats the action he is going to perform.</p>
+      <div class="pure-g">
+        <div class="pure-u-1-2">
+          <img src="assets/example_board.jpg" class="pure-img" />
+        </div>
+        <div class="pure-u-1-2">
+          <img src="assets/example_bot.jpg" class="pure-img" />
+        </div>
+      </div>
 
-      <h3>Number cards</h3>
-      <p>Number cards are used on top of some condition cards to define how the condition works. The can have one or
-        more numbers on them. There are many different combinations of numbers.</p>
+      <h3>Types of cards</h3>
+
+      <h4>Condition cards</h4>
+      <p>Condition cards are the basic building blocks for your robot. Each of them checks a sensor of the robot and can
+        return <b>yes</b> or <b>no</b> depending on your robots situation in the game. Some condition cards have an
+        empty space on them. It is used to add a <b>number card</b> to define
+        how the condition works.</p>
+
+      
+
+      <div class="pure-g">
+        <div class="pure-u-1-4"><img class="pure-img" src="assets/card_enemycheck.JPG" /></div>
+        <div class="pure-u-3-4">Is there another robot in front and at which distance? If it is equal to one of the numbers displayed on
+          the number card - continue left otherwise continue right.</div>
+      </div>
+      <div class="pure-g">
+        <div class="pure-u-1-4"><img class="pure-img" src="assets/card_heartcheck.JPG" /></div>
+        <div class="pure-u-3-4">How many life points does the robot have left? If it is equal to one of the numbers displayed on the
+          number card - continue left otherwise continue right.</div>
+      </div>
+      <div class="pure-g">
+        <div class="pure-u-1-4"><img class="pure-img" src="assets/card_wallcheck.JPG" /></div>
+        <div class="pure-u-3-4">The distance to the edge of the board is measured. If it is equal to one of the numbers displayed on the
+            number card - continue left otherwise continue right.</div>
+      </div>
+      <div class="pure-g">
+        <div class="pure-u-1-4"><img class="pure-img" src="assets/card_alertcheck.JPG" /></div>
+        <div class="pure-u-3-4">Checks if the robot could be attacked by another robot (is in shooting distance).</div>
+      </div>
+      <div class="pure-g">
+        <div class="pure-u-1-4"><img class="pure-img" src="assets/card_directviewcheck.JPG" /></div>
+        <div class="pure-u-3-4">Checks if another robot is in front of this robot and looking directly towards it.</div>
+      </div>
+      <div class="pure-g">
+        <div class="pure-u-1-4"><img class="pure-img" src="assets/card_random.JPG" /></div>
+        <div class="pure-u-3-4">When the random card is used each time a coin is flipped and depending on the outcome it continues left otherwise right.</div>
+      </div>
+
+      <h4>Number cards</h4>
+      <p>Number cards are used on top of some condition cards to define how the condition is evaluated. There are many
+        different combinations of numbers.</p>
       <img src="assets/card_numbers.jpg" class="pure-img">
 
-      <h3>Condition cards</h3>
-      <p>Some condition cards (the first three) have an empty space on them. It is used to add a number card to define
-        how the condition works.</p>
-      <table>
-        <tr>
-          <td><img style="width:200px;" src="assets/card_enemycheck.JPG" /></td>
-          <td>Is there another robot in front and at which distance? If it is equal to one of the numbers displayed on
-            the number card - continue left otherwise continue right.</td>
-        </tr>
-        <tr>
-          <td><img style="width:200px;" src="assets/card_heartcheck.JPG" /></td>
-          <td>How many life points does the robot have left? If it is equal to one of the numbers displayed on the
-            number card - continue left otherwise continue right.</td>
-        </tr>
-        <tr>
-          <td><img style="width:200px;" src="assets/card_wallcheck.JPG" /></td>
-          <td>The distance to the edge of the board is measured. If it is equal to one of the numbers displayed on the
-            number card - continue left otherwise continue right.</td>
-        </tr>
-        <tr>
-          <td><img style="width:200px;" src="assets/card_alertcheck.JPG" /></td>
-          <td>Checks if the robot could be attacked by another robot (is in shooting distance).</td>
-        </tr>
-        <tr>
-          <td><img style="width:200px;" src="assets/card_directviewcheck.JPG" /></td>
-          <td>Checks if another robot is in front of this robot and looking directly towards it.</td>
-        </tr>
-        <tr>
-          <td><img style="width:200px;" src="assets/card_random.jpg" /></td>
-          <td>When the random card is used each time a coin is flipped and depending on the outcome it continues left
-            otherwise right.</td>
-        </tr>
-      </table>
+      <h4>Action cards</h4>
+      <p>Action cards are used at the end to decide what action the robot will execute.</p>
 
-      <h3>Action cards</h3>
-      <table>
-        <tr>
-          <td><img style="width:100px;" src="assets/card_goahead.jpg" /></td>
-          <td>Move one step ahead.</td>
-        </tr>
-        <tr>
-          <td><img style="width:100px;" src="assets/card_goleft.jpg" /></td>
-          <td>Move one step left.</td>
-        </tr>
-        <tr>
-          <td><img style="width:100px;" src="assets/card_goright.jpg" /></td>
-          <td>Move one step right.</td>
-        </tr>
-        <tr>
-          <td><img style="width:100px;" src="assets/card_goback.jpg" /></td>
-          <td>Move one step backwards.</td>
-        </tr>
-        <tr>
-          <td><img style="width:100px;" src="assets/card_turnleft.jpg" /></td>
-          <td>Turn left staying in the same position.</td>
-        </tr>
-        <tr>
-          <td><img style="width:100px;" src="assets/card_turnright.jpg" /></td>
-          <td>Turn right staying in the same position.</td>
-        </tr>
-        <tr>
-          <td><img style="width:100px;" src="assets/card_attack.jpg" /></td>
-          <td>Attack robot in front (does 3 damage if there is a another robot 1 position away, 2 damage if 2 positions
-            away, 1 damage if 3 positions away).</td>
-        </tr>
-        <tr>
-          <td><img style="width:100px;" src="assets/card_nothing.jpg" /></td>
-          <td>Do nothing (this recovers 1 life point).</td>
-        </tr>
-      </table>
+      <div class="pure-g">
+        <div class="pure-u-1-8"><img class="pure-img" src="assets/card_goahead.JPG" /></div>
+        <div class="pure-u-7-8">Move one step ahead.</div>
+      </div>
+      <div class="pure-g">
+        <div class="pure-u-1-8"><img class="pure-img" src="assets/card_goleft.JPG" /></div>
+        <div class="pure-u-7-8">Move one step left.</div>
+      </div>
+      <div class="pure-g">
+        <div class="pure-u-1-8"><img class="pure-img" src="assets/card_goright.JPG" /></div>
+        <div class="pure-u-7-8">Move one step right.</div>
+      </div>
+      <div class="pure-g">
+        <div class="pure-u-1-8"><img class="pure-img" src="assets/card_goback.JPG" /></div>
+        <div class="pure-u-7-8">Move one step backwards.</div>
+      </div>
+      <div class="pure-g">
+        <div class="pure-u-1-8"><img class="pure-img" src="assets/card_turnleft.jpg" /></div>
+        <div class="pure-u-7-8">Turn left staying in the same position.</div>
+      </div>
+      <div class="pure-g">
+        <div class="pure-u-1-8"><img class="pure-img" src="assets/card_turnright.jpg" /></div>
+        <div class="pure-u-7-8">Turn right staying in the same position.</div>
+      </div>
+      <div class="pure-g">
+        <div class="pure-u-1-8"><img class="pure-img" src="assets/card_attack.JPG" /></div>
+        <div class="pure-u-7-8">Attack robot in front (does 3 damage if there is a another robot 1 position away, 2 damage if 2 positions
+          away, 1 damage if 3 positions away).</div>
+      </div>
+      <div class="pure-g">
+        <div class="pure-u-1-8"><img class="pure-img" src="assets/card_nothing.JPG" /></div>
+        <div class="pure-u-7-8">Do nothing (this recovers 1 life point).</div>
+      </div>
 
       <h3>Special cases</h3>
       <ul>
@@ -200,11 +219,11 @@
         </div>
         <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
           <h3 class="content-subhead">
-            Complete bot
+            (Almost) complete bot
           </h3>
           <img src="bots/complete.jpg" class="pure-img" />
           <p>
-            Bot using complete strategy using all available cards
+            Bot using a more complete strategy using almost all available cards
           </p>
         </div>
       </div>
@@ -218,14 +237,15 @@
         problems could be)</p>
 
       <div class="pure-g">
-        <div class="pure-u-1-2">
+        <div class="pure-u-1 pure-u-md-1-2">
           <h3>Player 1</h3>
           <p>
-            <button class="button-xlarge pure-button pure-button-primary"><i class="fa fa-camera"></i> Take Image and
+            <button class="button-xlarge pure-button pure-button-primary" style="background-color:blue"><i
+                class="fa fa-camera"></i> Take Image and
               Upload</button>
           </p>
           <p>or
-            <select class="tree2" onchange="loadFile(event)">
+            <select class="tree1" onchange="loadFile(event)">
               <option value="">choose example bot</option>
               <option value="bots/simple.jpg">Example 1</option>
               <option value="bots/basic.jpg">Example 2</option>
@@ -233,12 +253,13 @@
               <option value="bots/complete.jpg">Example 4</option>
             </select>
           </p>
-          <img src="bots/basic.jpg" class="pure-img">
+          <div id="errortree1"></div>
         </div>
-        <div class="pure-u-1-2">
+        <div class="pure-u-1 pure-u-md-1-2">
           <h3>Player 2</h3>
           <p>
-            <button class="button-xlarge pure-button pure-button-primary"><i class="fa fa-camera"></i> Take Image and
+            <button class="button-xlarge pure-button pure-button-primary" style="background-color:red"><i
+                class="fa fa-camera"></i> Take Image and
               Upload</button>
           </p>
           <p>or
@@ -250,118 +271,38 @@
               <option value="bots/complete.jpg">Example 4</option>
             </select>
           </p>
-          <img src="bots/basic.jpg" class="pure-img">
+          <div id="errortree2"></div>
         </div>
       </div>
 
-      <div style="width: 500px; margin: auto; margin-top: 40px;">
-        <button class="pure-button pure-button-primary">New Game</button>
-        <button class="pure-button pure-button-primary">Start</button>
-        <button class="pure-button pure-button-primary">Stop</button>
-        <div id="simulation" style="width: 500px; height: 500px;margin-top: 20px;">
-          
+      <div id="simulation-wrapper" style="width: 100%; max-width: 500px; margin: auto;">
+        <button class="pure-button pure-button-primary" onclick="initSimulation()">New Game</button>
+        <button class="pure-button pure-button-primary" onclick="startSimulation()">Start</button>
+        <button class="pure-button pure-button-primary" onclick="stopSimulation()">Pause</button>
+        <div id="simulation" style="width: 100%; height: 500px;margin-top: 20px;">
         </div>
       </div>
 
+      <h3>Statistics</h3>
+      <p>After 1000 simulated games we determined the following statistics</p>
+      <table class="pure-table" style="display: inline-block;">
+        <thead>
+          <tr>
+            <th>Player 1 WINS</th>
+            <th>DRAWS</th>
+            <th>Player 2 WINS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="stats_win1"></td>
+            <td id="stats_draw"></td>
+            <td id="stats_win2"></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
-
   </div>
-
 </body>
-
-
-<script>
-  function initStage(images) {
-    var stage = new Konva.Stage({
-      container: 'simulation',
-      width: 500,
-      height: 500
-    });
-
-    // grid
-    var backgroundLayer = new Konva.Layer();
-    {
-      let rect = new Konva.Rect({
-        x: 0,
-        y: 0,
-        width: 500,
-        height: 500,
-        stroke: 'black',
-        strokeWidth: 8,
-      })
-      backgroundLayer.add(rect)
-    }
-
-    for (let x = 0; x < 5; x++) {
-      let rect = new Konva.Rect({
-        x: x * 100,
-        y: 0,
-        width: 100,
-        height: 500,
-        stroke: 'black',
-        strokeWidth: 1,
-      })
-      backgroundLayer.add(rect)
-    }
-    for (let y = 0; y < 5; y++) {
-      let rect = new Konva.Rect({
-        x: 0,
-        y: 100 * y,
-        width: 500,
-        height: 100,
-        stroke: 'black',
-        strokeWidth: 1,
-      })
-      backgroundLayer.add(rect)
-    }
-    stage.add(backgroundLayer);
-
-    var playerLayer = new Konva.Layer();
-    stage.add(playerLayer);
-
-    var animations = {
-      idle: [
-        0, 0, 90, 90, 90, 0, 90, 90,
-      ],
-      punch: [
-        0, 0, 90, 90, 90, 0, 90, 90,
-      ],
-    };
-
-    var imageObj = new Image();
-    imageObj.src = "assets/sprite.png"
-    imageObj.onload = function () {
-      var player1 = new Konva.Sprite({
-        x: 5,
-        y: 5,
-        image: imageObj,
-        animation: 'idle',
-        animations: animations,
-        frameRate: 1,
-        frameIndex: 0,
-      });
-
-      playerLayer.add(player1);
-      player1.start();
-
-      var player2 = new Konva.Sprite({
-        x: 205,
-        y: 205,
-        image: imageObj,
-        animation: 'idle',
-        animations: animations,
-        frameRate: 2,
-        frameIndex: 0,
-      });
-
-      playerLayer.add(player2);
-      player2.start();
-    }
-
-  }
-
-  initStage();
-</script>
 
 </html>

@@ -1,9 +1,10 @@
 import getCodes from './logic/getCodes2.js';
 import getTree from './logic/getTree.js';
 import { createGame, runSimulationStep, runSimulations } from './logic/simulation.js';
-import { boardSize } from './logic/constants.js';
+import { initStage, setupGame, animateStepResult } from './logic/simulationView.js';
 
 let data = {}
+let interval = null
 
 function loadFile(event) {
   var image = new Image();
@@ -12,8 +13,10 @@ function loadFile(event) {
   } else if (event.target.files) {
     image.src = URL.createObjectURL(event.target.files[0])
   }
-  
+
   image.onload = function () {
+
+    // all done in memory
     var canvas = document.createElement('canvas');
     canvas.width = this.width;
     canvas.height = this.height;
@@ -22,22 +25,20 @@ function loadFile(event) {
     let pixels = context.getImageData(0, 0, canvas.width, canvas.height);
     let codes = getCodes(pixels.data, pixels.width, pixels.height)
 
+    //TODO draw on real canvas to debug (show where areas were detected)
+
     try {
       let tree = getTree(codes)
       data[event.target.className] = tree
-      document.getElementById("error" + event.target.className).textContent = codes.length + " Karten geladen";
+      document.getElementById("error" + event.target.className).textContent = codes.length + " cards loaded";
     } catch (err) {
       data[event.target.className] = null
-      document.getElementById("error" + event.target.className).textContent = "Fehler: " + err.message;
+      document.getElementById("error" + event.target.className).textContent = "Error: " + err.message;
     }
 
     if (data.tree1 && data.tree2) {
       calculateStatistics()
-      startSimulation()
-      document.getElementById("simulation-container").style.visibility = "visible";
-      //window.scrollTo(0,document.body.scrollHeight);
-    } else {
-      document.getElementById("simulation-container").style.visibility = "hidden";
+      initSimulation()
     }
 
     URL.revokeObjectURL(image.src) // free memory
@@ -46,56 +47,43 @@ function loadFile(event) {
 
 function calculateStatistics() {
   let trees = [data.tree1, data.tree2]
-  
+
   let nr = 1000
-  data.statistics = runSimulations(nr, trees)
+  let statistics = runSimulations(nr, trees)
 
-  document.getElementById("statistics").innerText = 
-  `${nr} Spiele, Siege Spieler 1: ${data.statistics.playerWins[0]}, Siege Spieler 2: ${data.statistics.playerWins[1]}, Unentschieden: ${data.statistics.draws}`
-
+  document.getElementById("stats_draw").innerText = statistics.draws
+  document.getElementById("stats_win1").innerText = statistics.playerWins[0]
+  document.getElementById("stats_win2").innerText = statistics.playerWins[1]
 }
 
-function startSimulation() {
+function initSimulation() {
   if (data.tree1 && data.tree2) {
     let trees = [data.tree1, data.tree2]
     data.game = createGame(trees)
-    clearBoard() 
-    drawBoard()
+    setupGame(data.game)
   }
 }
 
-function clearBoard() {
-  var board = document.getElementById("simulation")
-  board.innerHTML = "";
-}
-
-function drawBoard() {  
-  var board = document.getElementById("simulation")
-
-  let h3 = document.createElement("h3")
-  h3.innerText = "Zug " + (data.game.turn + 1) + (data.game.isFinished ? " - Spiel fertig" : "")
-  board.appendChild(h3)
-
-  for (let y = 0; y < boardSize; y++) {
-    for (let x = 0; x < boardSize; x++) {
-      let div = document.createElement("div")
-      let player = data.game.players.find(p => p.x === x && p.y === y)
-      if (player) {
-        div.innerText = player.name + " (" + player.lives + ")" +  (player.d.x === 1 ? ">" : player.d.x === -1 ? "<" : player.d.y === 1 ? "v" : "^")
-      }
-      board.appendChild(div)
-    }
-  }
-}
-
-function nextTurn() {
+function startSimulation() {
   if (data.game) {
-    runSimulationStep(data.game)
-    clearBoard() 
-    drawBoard()
+    stopSimulation()
+    interval = setInterval(() => {
+      let playersResults = runSimulationStep(data.game)
+      animateStepResult(playersResults)
+    }, 1000)
   }
 }
 
+function stopSimulation() {
+  if (interval) {
+    clearInterval(interval)
+    interval = null
+  }
+}
+
+// functions used from HTML
 window.loadFile = loadFile
+window.initSimulation = initSimulation
 window.startSimulation = startSimulation
-window.nextTurn = nextTurn
+window.stopSimulation = stopSimulation
+window.initStage = initStage

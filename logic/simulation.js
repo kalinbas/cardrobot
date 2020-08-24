@@ -20,15 +20,19 @@ export function createGame(trees) {
   return game
 }
 
+// runs simulation and returns outcome for each player (to be displayed)
 export function runSimulationStep(game) {
+
+  // turn resulting actions which need to be rendered somehow by ui
+  let result = game.players.map(p => ({ deltaLives: 0 }))
 
   // if game is finished - return
   if (game.isFinished) {
-    return
+    return result
   }
 
   // calculate action
-  for (let player of game.players) {
+  for (let [i, player] of game.players.entries()) {
     let action = null
     let index = 0
     let newFlags = []
@@ -98,10 +102,11 @@ export function runSimulationStep(game) {
     }
     player.flags = newFlags
     player.action = action
+    result[i].action = action.name
   }
 
   // take first actions
-  for (let player of game.players) {
+  for (let [i, player] of game.players.entries()) {
     let d = null
     switch (player.action.name) {
       case "turnleft":
@@ -127,7 +132,10 @@ export function runSimulationStep(game) {
         player.targetPosition = { x: d.x + player.x, y: d.y + player.y }
         break;
       case "nothing":
-        player.lives = Math.min(maxLives, player.lives + 1)
+        if (player.lives < maxLives) {
+          result[i].deltaLives += 1
+          player.lives += 1
+        }
         break;
     }
   }
@@ -144,17 +152,19 @@ export function runSimulationStep(game) {
   }
 
   // handle moving collisions
-  for (let player of game.players) {
+  for (let [i, player] of game.players.entries()) {
     if (player.targetPosition) {
 
       // crash with player
       let conflictPlayer = game.players.find(p =>
         p !== player &&
         ((p.targetPosition && p.targetPosition.x === player.targetPosition.x && p.targetPosition.y === player.targetPosition.y) ||
-          (!p.targetPosition && p.x === player.targetPosition.x && p.y === player.targetPosition.y)))
+          (p.x === player.targetPosition.x && p.y === player.targetPosition.y)))
 
       if (conflictPlayer) {
         player.lives--
+        result[i].deltaLives--
+        result[i].isCrash = true
       } else {
         // move only if no conflict
         player.x = player.targetPosition.x
@@ -164,15 +174,27 @@ export function runSimulationStep(game) {
   }
 
   // handle attack and clean up
-  for (let player of game.players) {
+  for (let [i, player] of game.players.entries()) {
     if (player.action.name === "attack") {
       let target = checkPlayerTarget(game, player)
       if (target && target.distance < 4) {
         target.player.lives -= 4 - target.distance // 1,2,3 damage depending on distance
+        result[game.players.indexOf(target.player)].deltaLives -= 4 - target.distance // 1,2,3 damage depending on distance
+        result[i].attackDistance = target.distance
+      } else {
+        result[i].attackDistance = 4
       }
     }
     delete player.targetPosition
     delete player.action
+  }
+
+  // set final lives
+  for (let [i, player] of game.players.entries()) {
+    result[i].lives = player.lives
+    result[i].d = player.d
+    result[i].x = player.x
+    result[i].y = player.y
   }
 
   //if all minus one player dead - set finished
@@ -182,11 +204,14 @@ export function runSimulationStep(game) {
       let winner = game.players.find(p => p.lives > 0)
       winner.isWinner = true
       game.winner = winner
+      result[game.players.indexOf(game.winner)].isWinner = true
     }
     game.isFinished = true
   }
 
   game.turn++
+
+  return result
 }
 
 function turnDirectionRight(d, nr) {
@@ -211,7 +236,7 @@ function checkPlayerTarget(game, player) {
 
 export function runSimulations(nr, trees) {
 
-  let maxTurns = 50
+  let maxTurns = 100
 
   let statistics = {
     playerWins: trees.map(t => 0),
