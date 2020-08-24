@@ -6,7 +6,7 @@ export default function getTree(codes) {
   let tree = []
 
   if (codes.length === 0) {
-    throw new Error("Keine Karten gefunden. Versuche es erneut.")
+    throw new Error("No cards detected. Try again")
   }
 
   // sort by y
@@ -30,14 +30,14 @@ export default function getTree(codes) {
       if (doProcessIndex) {
 
         if (sameLevelIndex === sameLevelCodes.length) {
-          throw new Error("Fehlende Karten in der Reihe " + level)
+          throw new Error(`Missing cards in row ${level}`)
         }
 
         const code = sameLevelCodes[sameLevelIndex]
         const card = cards[code.value]
 
         if (!card) {
-          throw new Error("Ungültiger Kartencode " + code.value)
+          throw new Error(`Invalid card code in row ${level}: ${code.value}`)
         }
 
         sameLevelIndex++
@@ -46,12 +46,12 @@ export default function getTree(codes) {
           tree[index] = { card }
         } else {
           if (sameLevelIndex === sameLevelCodes.length) {
-            throw new Error("Fehlende Parameterkarte in Reihe " + level)
+            throw new Error(`Missing param card in row ${level}`)
           }
           const paramCode = sameLevelCodes[sameLevelIndex]
           const paramCard = paramCards[paramCode.value]
           if (!paramCard) {
-            throw new Error("Ungültiger Parameterkartencode " + paramCode.value)
+            throw new Error(`Invalid param card code in row ${level}: ${paramCode.value}`)
           }
           tree[index] = { card, paramCard }
           sameLevelIndex++
@@ -60,7 +60,7 @@ export default function getTree(codes) {
     }
 
     if (sameLevelIndex < sameLevelCodes.length) {
-      throw new Error("Zuviele Karten in Reihe " + level)
+      throw new Error(`Too many cards in row ${level}`)
     }
 
     // continue with remaining codes on next level

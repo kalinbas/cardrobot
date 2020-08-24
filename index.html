@@ -240,9 +240,8 @@
         <div class="pure-u-1 pure-u-md-1-2">
           <h3>Player 1</h3>
           <p>
-            <button class="button-xlarge pure-button pure-button-primary" style="background-color:blue"><i
-                class="fa fa-camera"></i> Take Image and
-              Upload</button>
+            <label for="tree1" style="background-color:blue" class="button-xlarge pure-button pure-button-primary"><i class="fa fa-camera"></i> Take Image and Process</label>
+            <input id="tree1" style="display: none;" class="tree1" type="file" accept="image/*" capture="camera" onchange="loadFile(event)">
           </p>
           <p>or
             <select class="tree1" onchange="loadFile(event)">
@@ -258,9 +257,8 @@
         <div class="pure-u-1 pure-u-md-1-2">
           <h3>Player 2</h3>
           <p>
-            <button class="button-xlarge pure-button pure-button-primary" style="background-color:red"><i
-                class="fa fa-camera"></i> Take Image and
-              Upload</button>
+            <label for="tree2" style="background-color:red" class="button-xlarge pure-button pure-button-primary"><i class="fa fa-camera"></i> Take Image and Process</label>
+            <input id="tree2" style="display: none;" class="tree2" type="file" accept="image/*" capture="camera" onchange="loadFile(event)">
           </p>
           <p>or
             <select class="tree2" onchange="loadFile(event)">

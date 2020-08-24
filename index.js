@@ -30,7 +30,7 @@ function loadFile(event) {
     try {
       let tree = getTree(codes)
       data[event.target.className] = tree
-      document.getElementById("error" + event.target.className).textContent = codes.length + " cards loaded";
+      document.getElementById("error" + event.target.className).textContent = "Bot loaded (" + codes.length + " cards)";
     } catch (err) {
       data[event.target.className] = null
       document.getElementById("error" + event.target.className).textContent = "Error: " + err.message;
