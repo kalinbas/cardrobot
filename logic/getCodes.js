@@ -77,6 +77,14 @@ export default function getCodes(pixels, width, height) {
   // only show codes with min width
   codes = codes.filter(x => x.endX - x.startX > minWidth)
 
+  // remove size outliers (needs at least 4 detected codes)
+  if (codes.length >= 4) {
+    let avgWidth = codes.reduce((a, c) => a + (c.endX - c.startX), 0) / codes.length
+    let avgHeight = codes.reduce((a, c) => a + (c.endY - c.startY), 0) / codes.length
+    codes = codes.filter(c => Math.abs(c.endX - c.startX - avgWidth) / avgWidth < 0.5)
+    codes = codes.filter(c => Math.abs(c.endY - c.startY - avgHeight)  / avgHeight < 0.5)
+  }
+
   // TODO remove overlapping fake codes
 
   // calculate most common value for all

@@ -185,10 +185,13 @@ function moveToCoordsAnimated(x, y, obj) {
 }
 
 function rotateAnimated(isRight, obj) {
+
+  let rotateTo = obj.rotation() + (isRight ? 90 : -90)
+
   let tween = new Konva.Tween({
     node: obj,
     duration: 1,
-    rotation: obj.rotation() + (isRight ? 90 : -90),
+    rotation: rotateTo,
     //easing: Konva.Easings.EaseInOut,
   })
   tween.play()
