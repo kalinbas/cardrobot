@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CardRobots</title>
   <meta name="description"
-    content="CardRobots is a card game which allow you to program a robot in less than 5 minutes on your kitchen table. Just take a picture of your cards and your robot gets alive in your smartphone.">
+    content="CardRobots is a card game which allows you to program a robot in less than 5 minutes on your kitchen table. Just take a picture of your cards and your robot gets alive in your smartphone.">
   <link rel="stylesheet" href="css/pure/pure-min.css">
   <link rel="stylesheet" href="css/pure/grids-responsive-min.css">
   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
@@ -20,12 +20,21 @@
 
 <body onload="initStage()">
   <div class="splash-container">
+    <a href="mailto:cardrobotsgame@gmail.com" target="_blank" style="position: absolute; top: 20px; right: 20px;">
+      <i class="fa fa-envelope" style="font-size: 40px; color:white"></i>
+    </a>
+    <a href="https://github.com/kalinbas/cardrobots" target="_blank"
+      style="position: absolute; top: 20px; right: 80px;">
+      <i class="fa fa-github" style="font-size: 40px; color:white"></i>
+    </a>
+
     <div class="splash">
+
       <h1 class="splash-head">
         CardRobots
       </h1>
       <p class="splash-subhead">
-        CardRobots is a card game which allow you to program a robot in less than 5 minutes on your kitchen table. Just
+        CardRobots is a card game which allows you to program a robot in less than 5 minutes on your kitchen table. Just
         take a picture of your cards and your robot gets alive in your smartphone.
       </p>
       <div class="video">
@@ -62,10 +71,13 @@
       </p>
       <p>
         As soon as you have your own playing cards try to program a simple bot (following the <a
-          href="#rules">rules</a>), take a picture of it and upload it into the <a href="#simulator">simulator</a>.
+          href="#rules">rules</a>), take a picture of it and load it in the <a href="#simulator">simulator</a>.
       </p>
       <h3>Using a laptop / computer</h3>
-      <p>Alternatively you can also use this <a href="https://docs.google.com/drawings/d/1CKMszjBLOBoUTJzkHll-HgWMy7cfAJWWnHEHNiPrbeY/edit?usp=sharing" target="_blank">Google Drawings Document</a> to test the game without printing anything. You can then take a screenshot and upload the image in the <a href="#simulator">simulator</a>.</p>
+      <p>Alternatively you can also use this <a
+          href="https://docs.google.com/drawings/d/1CKMszjBLOBoUTJzkHll-HgWMy7cfAJWWnHEHNiPrbeY/edit?usp=sharing"
+          target="_blank">Google Drawings Document</a> to test the game without printing anything. You can then take a
+        screenshot and load the image in the <a href="#simulator">simulator</a>.</p>
     </div>
     <div class="content">
       <h2 id="rules" class="content-head is-center">Rules</h2>
@@ -82,7 +94,9 @@
       </ul>
       <h3>How to place the cards onto the game area</h3>
       <ul>
-        <li>Best have a look at the examples, but the main rule is that for each <b>condition card</b> you add two more cards below it which will tell the robot what to do when the condition is YES or NO. If this card is another <b>condition card</b> you need to add two more below and so on.</li>
+        <li>It's probably best to have a look at the examples, but the main rule is that for each <b>condition card</b> you add two more
+          cards below it which will tell the robot what to do when the condition is YES or NO. If this card is another
+          <b>condition card</b> you need to add two more below and so on.</li>
       </ul>
 
       <h3>How the robots decide what action to perform</h3>
@@ -98,7 +112,7 @@
       <p>Lets assume the blue robot has the programmed logic on the right. It first checks if it can directly see
         another robot in front of him. The answer is NO, so it continues to the next card on the right. This card checks
         if it is at distance 1 of the edge of the board and here the answer is YES. So it continues with the next card
-        on the left which is an action card TURN LEFT and thats the action he is going to perform.</p>
+        on the left which is an action card TURN LEFT and that is the action he is going to perform.</p>
       <div class="pure-g">
         <div class="pure-u-1-2">
           <img src="assets/example_board.jpg" class="pure-img" />
@@ -113,8 +127,7 @@
       <h4>Condition cards</h4>
       <p>Condition cards are the basic building blocks for your robot. Each of them checks a sensor of the robot and can
         return <b>yes</b> or <b>no</b> depending on your robots situation in the game. Some condition cards have an
-        empty space on them. It is used to add a <b>number card</b> to define
-        how the condition works.</p>
+        empty space on them. It is used to add a <b>number card</b> to define how the condition works.</p>
 
       <div class="pure-g">
         <div class="pure-u-1-4"><img class="pure-img" src="assets/card_enemycheck.jpg" /></div>
@@ -147,14 +160,28 @@
         <div class="pure-u-3-4">When the random card is used each time a coin is flipped and depending on the outcome it
           continues left otherwise right.</div>
       </div>
+      <div class="pure-g">
+        <div class="pure-u-1-4"><img class="pure-img" src="assets/card_ifvalue.jpg" /></div>
+        <div class="pure-u-3-4">If a SET card was activated in the current or the previous turn with any of the numbers
+          on the <b>number card</b> it continues left otherwise right.</div>
+      </div>
+
+      <h4>Special cards</h4>
+      <p>These cards have a different behaviour than other cards and are for advanced players only.</p>
+      <div class="pure-g">
+        <div class="pure-u-1-4"><img class="pure-img" src="assets/card_setvalue.jpg" /></div>
+        <div class="pure-u-3-4">This card is used together with the IF card to create robots which can remember things.
+          This card can be used to store values which are on the <b>number card</b>. Below this card you can add only
+          one card as it is not a <b>condition card</b>.</div>
+      </div>
 
       <h4>Number cards</h4>
-      <p>Number cards are used on top of some condition cards to define how the condition is evaluated. There are many
-        different combinations of numbers.</p>
+      <p>Number cards are used on top of some cards to define how the condition is evaluated. There are many
+        different combinations of numbers available.</p>
       <img src="assets/card_numbers.jpg" class="pure-img">
 
       <h4>Action cards</h4>
-      <p>Action cards are used at the end to decide what action the robot will execute.</p>
+      <p>Action cards are used below <b>condition cards</b> to decide what action the robot will execute.</p>
 
       <div class="pure-g">
         <div class="pure-u-1-8"><img class="pure-img" src="assets/card_goahead.jpg" /></div>
@@ -193,9 +220,9 @@
 
       <h3>Special cases</h3>
       <ul>
-        <li>Attack actions are always excecuted AFTER movements, so it is possible to escape an attack.</li>
-        <li>If a robot decide to walk onto and occupied space or outside the game board - he looses 1 life point</li>
-        <li>If two (or more) robots decide to walk onto the same space - Both loose 1 life point</li>
+        <li>Attack actions are always executed AFTER movements, so it is possible to escape an attack.</li>
+        <li>If a robot decides to walk onto an occupied space or outside the game board - he looses 1 life point</li>
+        <li>If two (or more) robots decide to walk onto the same space - each of them looses 1 life point</li>
       </ul>
     </div>
 
@@ -217,7 +244,7 @@
           </h3>
           <img src="bots/basic.jpg" class="pure-img" />
           <p>
-            If enemy is visible and at 1, 2 or 3 distance, attack, otherwise if player is under attack move to the right
+            If another robot is visible at distance 1, 2 or 3 then attack, otherwise if player is under attack move to the right
             or
             left (with a probability of 50%), if player is standing on the edge of the board turn left otherwise go
             ahead.
@@ -249,7 +276,7 @@
 
       <p>Here you can upload your robot program and test it against other robots. If there is a problem with your
         program (if your program doesn't follow the rules or if the picture can not be read it will tell you what the
-        problems could be)</p>
+        problems could be). Usually try to take a better lit image with all cards well aligned and visible.</p>
 
       <div class="pure-g">
         <div class="pure-u-1 pure-u-md-1-2">
@@ -303,7 +330,7 @@
       </div>
 
       <h3>Statistics</h3>
-      <p>After running 1000 simulated games the following statistics were determined</p>
+      <p>After running 1000 simulated games the following statistics were calculated</p>
       <table class="pure-table" style="display: inline-block;">
         <thead>
           <tr>
@@ -323,4 +350,5 @@
     </div>
   </div>
 </body>
+
 </html>
