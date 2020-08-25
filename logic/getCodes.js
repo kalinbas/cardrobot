@@ -8,7 +8,7 @@ const maxBarSize = 100
 const maxGapX = 10
 const maxGapY = 10
 
-const minWidth = 4
+const minWidth = 5
 const colorThreshold = 128
 
 const scanStepX = 1
