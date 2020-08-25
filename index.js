@@ -1,4 +1,4 @@
-import getCodes from './logic/getCodes2.js';
+import getCodes from './logic/getCodes.js';
 import getTree from './logic/getTree.js';
 import { createGame, runSimulationStep, runSimulations } from './logic/simulation.js';
 import { initStage, setupGame, animateStepResult } from './logic/simulationView.js';
@@ -17,15 +17,15 @@ function loadFile(event) {
   image.onload = function () {
 
     // all done in memory
-    var canvas = document.createElement('canvas');
+    let canvas = document.createElement('canvas');
     canvas.width = this.width;
     canvas.height = this.height;
-    var context = canvas.getContext('2d');
+    let context = canvas.getContext('2d');
     context.drawImage(image, 0, 0);
     let pixels = context.getImageData(0, 0, canvas.width, canvas.height);
     let codes = getCodes(pixels.data, pixels.width, pixels.height)
 
-    //TODO draw on real canvas to debug (show where areas were detected)
+    document.getElementById("debug" + event.target.className).innerHTML = ""
 
     try {
       let tree = getTree(codes)
@@ -34,6 +34,16 @@ function loadFile(event) {
     } catch (err) {
       data[event.target.className] = null
       document.getElementById("error" + event.target.className).textContent = "Error: " + err.message;
+
+      for(let code of codes) {
+        context.fillStyle = "rgba(0, 255, 255, 0.5)";
+        context.fillRect(code.startX, code.startY, code.endX - code.startX, code.endY - code.startY);
+        context.font = "32px Arial";
+        context.fillText(code.value, code.startX + 20, code.startY);
+      }
+
+      canvas.style.width = "100%"
+      document.getElementById("debug" + event.target.className).appendChild(canvas)
     }
 
     if (data.tree1 && data.tree2) {
