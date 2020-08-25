@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CardRobots</title>
   <meta name="description"
     content="CardRobots is a card game which allow you to program a robot in less than 5 minutes on your kitchen table. Just take a picture of your cards and your robot gets alive in your smartphone.">
-  <title>CardRobots</title>
   <link rel="stylesheet" href="css/pure/pure-min.css">
   <link rel="stylesheet" href="css/pure/grids-responsive-min.css">
   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="css/styles.css">
 
   <script src="https://unpkg.com/konva@7.0.6/konva.min.js"></script>
+
   <script src="index.js" type="module"></script>
 </head>
 
@@ -24,7 +25,8 @@
         CardRobots
       </h1>
       <p class="splash-subhead">
-        CardRobots is a card game which allow you to program a robot in less than 5 minutes on your kitchen table. Just take a picture of your cards and your robot gets alive in your smartphone.
+        CardRobots is a card game which allow you to program a robot in less than 5 minutes on your kitchen table. Just
+        take a picture of your cards and your robot gets alive in your smartphone.
       </p>
       <div class="video">
         <iframe
@@ -47,7 +49,8 @@
     <div class="content">
       <h2 id="start" class="content-head is-center">Start playing</h2>
       <p>To start playing <strong>CardRobots</strong> you need to print and cut the playing cards which you can
-        download here. The playing board (optional) can be used to test the robots movements on your table before uploading it to the simulator.</p>
+        download here. The playing board (optional) can be used to test the robots movements on your table before
+        uploading it to the simulator.</p>
       <p class="is-center">
         <a class="pure-button pure-button-primary" href="assets/cards1.pdf" target="_blank"><i
             class="fa fa-download"></i> Cards 1 (.pdf)</a>
@@ -105,22 +108,23 @@
         empty space on them. It is used to add a <b>number card</b> to define
         how the condition works.</p>
 
-      
-
       <div class="pure-g">
         <div class="pure-u-1-4"><img class="pure-img" src="assets/card_enemycheck.jpg" /></div>
-        <div class="pure-u-3-4">Is there another robot in front and at which distance? If it is equal to one of the numbers displayed on
+        <div class="pure-u-3-4">Is there another robot in front and at which distance? If it is equal to one of the
+          numbers displayed on
           the number card - continue left otherwise continue right.</div>
       </div>
       <div class="pure-g">
         <div class="pure-u-1-4"><img class="pure-img" src="assets/card_heartcheck.jpg" /></div>
-        <div class="pure-u-3-4">How many life points does the robot have left? If it is equal to one of the numbers displayed on the
+        <div class="pure-u-3-4">How many life points does the robot have left? If it is equal to one of the numbers
+          displayed on the
           number card - continue left otherwise continue right.</div>
       </div>
       <div class="pure-g">
         <div class="pure-u-1-4"><img class="pure-img" src="assets/card_wallcheck.jpg" /></div>
-        <div class="pure-u-3-4">The distance to the edge of the board is measured. If it is equal to one of the numbers displayed on the
-            number card - continue left otherwise continue right.</div>
+        <div class="pure-u-3-4">The distance to the edge of the board is measured. If it is equal to one of the numbers
+          displayed on the
+          number card - continue left otherwise continue right.</div>
       </div>
       <div class="pure-g">
         <div class="pure-u-1-4"><img class="pure-img" src="assets/card_alertcheck.jpg" /></div>
@@ -132,7 +136,8 @@
       </div>
       <div class="pure-g">
         <div class="pure-u-1-4"><img class="pure-img" src="assets/card_random.jpg" /></div>
-        <div class="pure-u-3-4">When the random card is used each time a coin is flipped and depending on the outcome it continues left otherwise right.</div>
+        <div class="pure-u-3-4">When the random card is used each time a coin is flipped and depending on the outcome it
+          continues left otherwise right.</div>
       </div>
 
       <h4>Number cards</h4>
@@ -169,7 +174,8 @@
       </div>
       <div class="pure-g">
         <div class="pure-u-1-8"><img class="pure-img" src="assets/card_attack.jpg" /></div>
-        <div class="pure-u-7-8">Attack robot in front (does 3 damage if there is a another robot 1 position away, 2 damage if 2 positions
+        <div class="pure-u-7-8">Attack robot in front (does 3 damage if there is a another robot 1 position away, 2
+          damage if 2 positions
           away, 1 damage if 3 positions away).</div>
       </div>
       <div class="pure-g">
@@ -241,8 +247,10 @@
         <div class="pure-u-1 pure-u-md-1-2">
           <h3>Player 1</h3>
           <p>
-            <label for="tree1" style="background-color:blue" class="button-xlarge pure-button pure-button-primary"><i class="fa fa-camera"></i> Take Image and Process</label>
-            <input id="tree1" style="display: none;" class="tree1" type="file" accept="image/*" capture="camera" onchange="loadFile(event)">
+            <label for="tree1" style="background-color:blue" class="button-xlarge pure-button pure-button-primary"><i
+                class="fa fa-camera"></i> Take Image and Process</label>
+            <input id="tree1" style="display: none;" class="tree1" type="file" accept="image/*" capture="camera"
+              onchange="loadFile(event)">
           </p>
           <p>or
             <select class="tree1" onchange="loadFile(event)">
@@ -259,8 +267,10 @@
         <div class="pure-u-1 pure-u-md-1-2">
           <h3>Player 2</h3>
           <p>
-            <label for="tree2" style="background-color:red" class="button-xlarge pure-button pure-button-primary"><i class="fa fa-camera"></i> Take Image and Process</label>
-            <input id="tree2" style="display: none;" class="tree2" type="file" accept="image/*" capture="camera" onchange="loadFile(event)">
+            <label for="tree2" style="background-color:red" class="button-xlarge pure-button pure-button-primary"><i
+                class="fa fa-camera"></i> Take Image and Process</label>
+            <input id="tree2" style="display: none;" class="tree2" type="file" accept="image/*" capture="camera"
+              onchange="loadFile(event)">
           </p>
           <p>or
             <select class="tree2" onchange="loadFile(event)">
@@ -305,5 +315,4 @@
     </div>
   </div>
 </body>
-
 </html>
