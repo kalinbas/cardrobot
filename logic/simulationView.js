@@ -187,6 +187,7 @@ function moveToCoordsAnimated(x, y, obj) {
 function rotateAnimated(isRight, obj) {
 
   let rotateTo = obj.rotation() + (isRight ? 90 : -90)
+  rotateTo = Math.round(rotateTo / 90) * 90
 
   let tween = new Konva.Tween({
     node: obj,
