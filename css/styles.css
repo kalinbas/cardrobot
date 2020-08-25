@@ -72,6 +72,16 @@ html, body, .splash-container {
   background: #1f8dd6;
 }
 
+a {
+  font-weight: bold;
+  text-decoration: none;
+  color: #1f8dd6;
+}
+
+a.pure-button {
+  font-weight: normal;
+}
+
 .splash {
   /* absolute center .splash within .splash-container */
   width: 80%;

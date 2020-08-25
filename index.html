@@ -48,6 +48,7 @@
 
     <div class="content">
       <h2 id="start" class="content-head is-center">Start playing</h2>
+      <h3>Using real playing cards and a smartphone</h3>
       <p>To start playing <strong>CardRobots</strong> you need to print and cut the playing cards which you can
         download here. The playing board (optional) can be used to test the robots movements on your table before
         uploading it to the simulator.</p>
@@ -63,6 +64,8 @@
         As soon as you have your own playing cards try to program a simple bot (following the <a
           href="#rules">rules</a>), take a picture of it and upload it into the <a href="#simulator">simulator</a>.
       </p>
+      <h3>Using a laptop / computer</h3>
+      <p>Alternatively you can also use this <a href="https://docs.google.com/drawings/d/1CKMszjBLOBoUTJzkHll-HgWMy7cfAJWWnHEHNiPrbeY/edit?usp=sharing" target="_blank">Google Drawings Document</a> to test the game without printing anything. You can then take a screenshot and upload the image in the <a href="#simulator">simulator</a>.</p>
     </div>
     <div class="content">
       <h2 id="rules" class="content-head is-center">Rules</h2>
@@ -77,6 +80,11 @@
           game.</li>
         <li>Using his programmed logic each turn the robot decides what action he wants to perform.</li>
       </ul>
+      <h3>How to place the cards onto the game area</h3>
+      <ul>
+        <li>Best have a look at the examples, but the main rule is that for each <b>condition card</b> you add two more cards below it which will tell the robot what to do when the condition is YES or NO. If this card is another <b>condition card</b> you need to add two more below and so on.</li>
+      </ul>
+
       <h3>How the robots decide what action to perform</h3>
       <ul>
         <li>
@@ -248,7 +256,7 @@
           <h3>Player 1</h3>
           <p>
             <label for="tree1" style="background-color:blue" class="button-xlarge pure-button pure-button-primary"><i
-                class="fa fa-camera"></i> Take Image and Process</label>
+                class="fa fa-camera"></i> Take Image</label>
             <input id="tree1" style="display: none;" class="tree1" type="file" accept="image/*" capture="camera"
               onchange="loadFile(event)">
           </p>
@@ -268,7 +276,7 @@
           <h3>Player 2</h3>
           <p>
             <label for="tree2" style="background-color:red" class="button-xlarge pure-button pure-button-primary"><i
-                class="fa fa-camera"></i> Take Image and Process</label>
+                class="fa fa-camera"></i> Take Image</label>
             <input id="tree2" style="display: none;" class="tree2" type="file" accept="image/*" capture="camera"
               onchange="loadFile(event)">
           </p>
