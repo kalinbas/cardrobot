@@ -33,6 +33,13 @@ export function runSimulationStep(game) {
 
   // calculate action
   for (let [i, player] of game.players.entries()) {
+
+    // if player dead do nothing
+    if (player.lives <= 0) {
+      player.action = "nothing"
+      continue;
+    }
+
     let action = null
     let index = 0
     let newFlags = []
@@ -131,7 +138,7 @@ export function runSimulationStep(game) {
         d = turnDirectionRight(player.d, 3)
         player.targetPosition = { x: d.x + player.x, y: d.y + player.y }
         break;
-      case "nothing":
+      case "heal":
         if (player.lives < maxLives) {
           result[i].deltaLives += 1
           player.lives += 1
